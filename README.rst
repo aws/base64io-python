@@ -25,6 +25,11 @@ streams. What we really wanted was a standard stream that applies base64 encodin
 
 This led us to build :class:`base64io.Base64IO`.
 
+:class:`base64io.Base64IO` provides an `io` stream interface with context manager support
+that transparently performs base64 transormations to data passed through it. This can be
+very useful if you want to transform large files without caching the entire contenxt in memory
+or if you want to work with an existing stream and apply a base64 transformation to it.
+
 The latest full documentation can be found at `Read the Docs`_.
 
 Find us on `GitHub`_.
