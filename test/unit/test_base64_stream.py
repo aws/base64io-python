@@ -11,9 +11,11 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 """Unit test suite for ``aws_encryption_sdk_cli.internal.encoding``."""
+from __future__ import division
 import base64
 import functools
 import io
+import math
 import os
 
 from mock import MagicMock, sentinel
@@ -138,7 +140,7 @@ def build_test_cases():
 
     # Odd multiples with operation smaller, equal to, and larger than total
     for rounds in (1, 3, 5):
-        for read_size in (1, 2, 3, 4, 5, 1024, 1500):
+        for read_size in (1, 2, 3, 4, 5, 6, 7, 1024, 1500):
             test_cases.append((1024, read_size, rounds, min(read_size * rounds, 1024)))
 
     return test_cases
@@ -159,6 +161,42 @@ def test_base64io_decode(bytes_to_generate, bytes_per_round, number_of_rounds, t
 
     assert len(test) == total_bytes_to_expect
     assert test == plaintext_source[:total_bytes_to_expect]
+
+
+@pytest.mark.parametrize(
+    'bytes_to_generate, bytes_per_round, number_of_rounds, total_bytes_to_expect',
+    build_test_cases()
+)
+def test_base64io_encode_partial(bytes_to_generate, bytes_per_round, number_of_rounds, total_bytes_to_expect):
+    plaintext_source = os.urandom(bytes_to_generate)
+    plaintext_stream = io.BytesIO(plaintext_source)
+    plaintext_b64 = base64.b64encode(plaintext_source)
+    target_stream = io.BytesIO()
+    target_wrapped = Base64IO(target_stream)
+
+    for _round in range(number_of_rounds):
+        target_wrapped.write(plaintext_stream.read(bytes_per_round))
+
+    # Only close if we expect to read the entire source. Otherwise, we specifically want a partial write.
+    if bytes_to_generate == total_bytes_to_expect:
+        target_wrapped.close()
+        # Output length can be different if we pad, which we only do on close.
+        expected_encoded_bytes = len(plaintext_b64)
+    else:
+        bytes_converted = plaintext_stream.tell() - len(target_wrapped._Base64IO__write_buffer)
+        expected_encoded_bytes = math.ceil(bytes_converted / 3 * 4)
+
+    # We read all of the bytes that we expected to from the source stream
+    assert plaintext_stream.tell() == total_bytes_to_expect
+    # We wrote all of the bytes that we expected to onto the target stream
+    assert len(target_stream.getvalue()) == expected_encoded_bytes
+    if bytes_to_generate == total_bytes_to_expect:
+        # If we expected to process the entire stream, the results should be complete
+        assert plaintext_b64 == target_stream.getvalue()
+    else:
+        # Otherwise, the encoded contents of the target stream should be a valid prefix of
+        # the total encoded data
+        assert plaintext_b64.startswith(target_stream.getvalue())
 
 
 @pytest.mark.parametrize('source_bytes', [case[0] for case in build_test_cases()])
