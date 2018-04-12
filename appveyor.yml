@@ -1,0 +1,62 @@
+# https://packaging.python.org/guides/supporting-windows-using-appveyor/
+
+environment:
+
+  matrix:
+    # The only test we perform on Windows are our actual code tests. All linting, static
+    # analysis, etc are only run on Linux (via Travis CI).
+
+    # Python 2.6
+    - PYTHON: "C:\\Python26"
+      TOXENV: "py26"
+    - PYTHON: "C:\\Python26-x64"
+      TOXENV: "py26"
+
+    # Python 2.7
+    - PYTHON: "C:\\Python27"
+      TOXENV: "py27"
+    - PYTHON: "C:\\Python27-x64"
+      TOXENV: "py27"
+
+    # Python 3.3
+    - PYTHON: "C:\\Python33"
+      TOXENV: "py33"
+    - PYTHON: "C:\\Python33-x64"
+      TOXENV: "py33"
+
+    # Python 3.4
+    - PYTHON: "C:\\Python34"
+      TOXENV: "py34"
+    - PYTHON: "C:\\Python34-x64"
+      DISTUTILS_USE_SDK: "1"
+      TOXENV: "py34"
+
+    # Python 3.5
+    - PYTHON: "C:\\Python35"
+      TOXENV: "py35"
+    - PYTHON: "C:\\Python35-x64"
+      TOXENV: "py35"
+
+    # Python 3.6
+    - PYTHON: "C:\\Python36"
+      TOXENV: "py36"
+    - PYTHON: "C:\\Python36-x64"
+      TOXENV: "py36"
+
+    # Python 3.7
+    - PYTHON: "C:\\Python37"
+      TOXENV: "py37"
+    - PYTHON: "C:\\Python37-x64"
+      TOXENV: "py37"
+
+install:
+  # Prepend newly installed Python to the PATH of this build
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  # Check the Python version to verify the correct version was installed
+  - "python --version"
+  - "python -m pip install wheel tox"
+
+build: off
+
+test_script:
+  - "tox"
