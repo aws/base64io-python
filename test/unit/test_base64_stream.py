@@ -12,6 +12,7 @@
 # language governing permissions and limitations under the License.
 """Unit test suite for ``aws_encryption_sdk_cli.internal.encoding``."""
 from __future__ import division
+
 import base64
 import functools
 import io
