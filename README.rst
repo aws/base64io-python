@@ -14,23 +14,22 @@ base64io
    :target: https://base64io-python.readthedocs.io/en/stable/
    :alt: Documentation Status
 
-Python has had native base64 encoding support since 2.4, which is great. However, when we
-needed to encoded and decode streaming data, we realized that there is no streaming interface
-for base64 encoding, and there doesn't appear to be anything available from the community
-either.
+This project is designed to develop a class, :class:`base64io.Base64IO`, that implements
+a streaming interface for Base64 encoding.
 
-There is the legacy ``base64.encode`` and ``base64.decode`` interface, but while this interface
-lets you shuffle data between two streams, it assumes that you are starting with two complete
-streams. What we really wanted was a standard stream that applies base64 encoding/decoding.
+Python has supported native Base64 encoding since version 2.4. However, there is no
+streaming interface for Base64 encoding, and none is available from the community.
 
-This led us to build :class:`base64io.Base64IO`.
+The legacy ``base64.encode`` and ``base64.decode`` interface lets you shuffle data between
+two streams, but it assumes that you have two complete streams. We wanted a
+standard stream that applies Base64 encoding and decoding.
 
-:class:`base64io.Base64IO` provides an `io` stream interface with context manager support
-that transparently performs base64 transormations to data passed through it. This can be
-very useful if you want to transform large files without caching the entire contenxt in memory
-or if you want to work with an existing stream and apply a base64 transformation to it.
+:class:`base64io.Base64IO` provides an `io` streaming interface with context manager
+support that transparently Base64-encodes data read from it. You can use it to transform
+large files without caching the entire context in memory, or to transform an existing 
+stream.
 
-The latest full documentation can be found at `Read the Docs`_.
+For the latest full documentation, see `Read the Docs`_.
 
 Find us on `GitHub`_.
 
@@ -38,9 +37,9 @@ Find us on `GitHub`_.
 Getting Started
 ***************
 
-:class:`base64io.Base64IO` has no dependencies outside of the standard library and should
-work with any version of Python after 2.6. We test it for 2.6, 2.7, 3.3, 3.4, 3.5, 3.6, and
-3.7.
+:class:`base64io.Base64IO` has no dependencies other than the standard library and should
+work with any version of Python greater than 2.6. We test it on CPython 2.6, 2.7, 3.3, 
+3.4, 3.5, 3.6, and 3.7.
 
 Installation
 ============
@@ -52,19 +51,19 @@ Installation
 ***
 Use
 ***
-:class:`base64io.Base64IO` works by wrapping another stream and transparently transforming
-data written to or read from that stream.
+:class:`base64io.Base64IO` wraps the input stream and transparently encodes or decodes 
+data written to or read from the input stream.
 
 * ``write()`` encodes data before writing it to the wrapped stream
 * ``read()`` decodes data after reading it from the wrapped stream
 
 Because the position of the :class:`base64io.Base64IO` stream and the wrapped stream will
-almost always be differently, :class:`base64io.Base64IO` does not support:
+almost always be different, :class:`base64io.Base64IO` does not support:
 
 * ``seek()``
 * ``tell()``
 
-:class:`base64io.Base64IO` also does not support:
+Also, :class:`base64io.Base64IO` does not support:
 
 * ``fileno()``
 * ``truncate()``
@@ -74,13 +73,12 @@ Encode data
 
 .. warning::
 
-   Any time you are writing to a :class:`base64io.Base64IO` stream, you **must** close the
-   stream after your final write. Because of how the base64 transformation works, up to two
-   bytes of unencoded data might be held in an internal buffer and not written to the wrapped
-   stream. Calling ``close()`` flushes this buffer and writes the padded result to the wrapped
-   stream.
-
-   If you are using :class:`base64io.Base64IO` as a context manager, we take care of this for you.
+   If you are not using :class:`base64io.Base64IO` as a context manager, when you write to
+   a :class:`base64io.Base64IO` stream, you **must** close the stream after your final
+   write. The Base64 transformation might hold up to two bytes of unencoded data in an
+   internal buffer before writing it to the wrapped stream. Calling ``close()`` flushes
+   this buffer and writes the padded result to the wrapped stream. The
+   :class:`base64io.Base64IO` context manager does this for you.
 
 .. code-block:: python
 
@@ -96,8 +94,8 @@ Decode data
 
 .. note::
 
-   Because of how the base64 transformation works, any calls to ``read()`` might read up
-   to three additional bytes from the underlying stream.
+   When it reads data from the wrapping stream, it might read up to three additional bytes
+   from the underlying stream.
 
 .. code-block:: python
 
