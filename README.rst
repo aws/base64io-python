@@ -26,7 +26,7 @@ standard stream that applies Base64 encoding and decoding.
 
 :class:`base64io.Base64IO` provides an `io` streaming interface with context manager
 support that transparently Base64-encodes data read from it. You can use it to transform
-large files without caching the entire context in memory, or to transform an existing 
+large files without caching the entire context in memory, or to transform an existing
 stream.
 
 For the latest full documentation, see `Read the Docs`_.
@@ -38,7 +38,7 @@ Getting Started
 ***************
 
 :class:`base64io.Base64IO` has no dependencies other than the standard library and should
-work with any version of Python greater than 2.6. We test it on CPython 2.6, 2.7, 3.3, 
+work with any version of Python greater than 2.6. We test it on CPython 2.6, 2.7, 3.3,
 3.4, 3.5, 3.6, and 3.7.
 
 Installation
@@ -51,7 +51,7 @@ Installation
 ***
 Use
 ***
-:class:`base64io.Base64IO` wraps the input stream and transparently encodes or decodes 
+:class:`base64io.Base64IO` wraps the input stream and transparently encodes or decodes
 data written to or read from the input stream.
 
 * ``write()`` encodes data before writing it to the wrapped stream
