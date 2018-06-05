@@ -133,7 +133,7 @@ def build_test_cases():
     test_cases = []
 
     # exact single-shot, varying multiples
-    for size in (1, 2, 3, 4, 5, 6, 7, 222, 1024):
+    for size in (0, 1, 2, 3, 4, 5, 6, 7, 222, 1024):
         test_cases.append((size, size, 1, size))
 
     test_cases.append((1024, None, 1, 1024))  # single-shot
