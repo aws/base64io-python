@@ -36,5 +36,7 @@ matrix:
       env: TOXENV=flake8-tests
     - python: 3.6
       env: TOXENV=pylint-tests
+    - python: 3.6
+      env: TOXENV=black-check
 install: pip install tox
 script: tox
