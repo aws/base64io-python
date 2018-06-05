@@ -89,6 +89,7 @@ class Base64IO(io.IOBase):
         # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> bool
         """Properly close self on exit."""
         self.close()
+        return False
 
     def close(self):
         # type: () -> None
