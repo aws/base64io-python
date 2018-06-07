@@ -6,11 +6,12 @@ environment:
     # The only test we perform on Windows are our actual code tests. All linting, static
     # analysis, etc are only run on Linux (via Travis CI).
 
+    # Disabling pending https://github.com/awslabs/base64io-python/issues/5
     # Python 2.6
-    - PYTHON: "C:\\Python26"
-      TOXENV: "py26"
-    - PYTHON: "C:\\Python26-x64"
-      TOXENV: "py26"
+    #- PYTHON: "C:\\Python26"
+    #  TOXENV: "py26"
+    #- PYTHON: "C:\\Python26-x64"
+    #  TOXENV: "py26"
 
     # Python 2.7
     - PYTHON: "C:\\Python27"
