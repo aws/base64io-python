@@ -32,7 +32,7 @@ setup(
     version=get_version(),
     packages=find_packages("src"),
     package_dir={"": "src"},
-    url="http://base64io.readthedocs.io/en/latest/",
+    url="https://github.com/awslabs/base64io-python",
     author="Amazon Web Services",
     author_email="aws-cryptools@amazon.com",
     maintainer="Amazon Web Services",
