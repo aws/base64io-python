@@ -18,8 +18,8 @@ import pytest
 
 from base64io import Base64IO
 
-hypothesis = pytest.importorskip('hypothesis')
-hypothesis_strategies = pytest.importorskip('hypothesis.strategies')
+hypothesis = pytest.importorskip("hypothesis")
+hypothesis_strategies = pytest.importorskip("hypothesis.strategies")
 
 pytestmark = [pytest.mark.functional]
 
@@ -28,12 +28,12 @@ HYPOTHESIS_SETTINGS = hypothesis.settings(
         hypothesis.HealthCheck.too_slow,
         hypothesis.HealthCheck.data_too_large,
         hypothesis.HealthCheck.hung_test,
-        hypothesis.HealthCheck.large_base_example
+        hypothesis.HealthCheck.large_base_example,
     ),
     timeout=hypothesis.unlimited,
     deadline=None,
     max_examples=1000,
-    max_iterations=1500
+    max_iterations=1500,
 )
 BINARY = hypothesis_strategies.binary()
 
