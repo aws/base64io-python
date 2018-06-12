@@ -23,7 +23,7 @@ LOGGER_NAME = "base64io"
 
 try:  # Python 3.5.0 and 3.5.1 have incompatible typing modules
     from types import TracebackType  # noqa pylint: disable=unused-import
-    from typing import IO, Iterable, List, Optional  # noqa pylint: disable=unused-import
+    from typing import IO, Iterable, List, Type, Optional  # noqa pylint: disable=unused-import
 except ImportError:  # pragma: no cover
     # We only actually need these imports when running the mypy checks
     pass
@@ -86,9 +86,10 @@ class Base64IO(io.IOBase):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        # type: (type, BaseException, TracebackType) -> None
+        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> bool
         """Properly close self on exit."""
         self.close()
+        return False
 
     def close(self):
         # type: () -> None
@@ -231,8 +232,8 @@ class Base64IO(io.IOBase):
             _remaining_bytes_to_read = total_bytes_to_read - _data_buffer.tell()
         return _data_buffer.getvalue()
 
-    def read(self, b=None):
-        # type: (Optional[int]) -> bytes
+    def read(self, b=-1):
+        # type: (int) -> bytes
         """Read bytes from wrapped stream, base64-decoding before return.
 
         .. note::
@@ -250,10 +251,12 @@ class Base64IO(io.IOBase):
         if not self.readable():
             raise IOError("Stream is not readable")
 
-        if b is not None and b < 0:
-            b = None
-        _bytes_to_read = None
-        if b is not None:
+        if b is None or b < 0:
+            b = -1
+            _bytes_to_read = -1
+        elif b == 0:
+            _bytes_to_read = 0
+        elif b > 0:
             # Calculate number of encoded bytes that must be read to get b raw bytes.
             _bytes_to_read = int((b - len(self.__read_buffer)) * 4 / 3)
             _bytes_to_read += 4 - _bytes_to_read % 4
