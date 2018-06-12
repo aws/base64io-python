@@ -10,9 +10,19 @@ base64io
    :target: https://pypi.python.org/pypi/base64io
    :alt: Supported Python Versions
 
+.. image:: https://img.shields.io/badge/code_style-black-000000.svg
+   :target: https://github.com/ambv/black
+   :alt: Code style: black
+
 .. image:: https://readthedocs.org/projects/base64io-python/badge/
    :target: https://base64io-python.readthedocs.io/en/stable/
    :alt: Documentation Status
+
+.. image:: https://travis-ci.org/awslabs/base64io-python.svg?branch=master
+   :target: https://travis-ci.org/awslabs/base64io-python
+
+.. image:: https://ci.appveyor.com/api/projects/status/ds8xvogp4m70j9ks?svg=true
+   :target: https://ci.appveyor.com/project/mattsb42-aws/base64io-python-36722
 
 This project is designed to develop a class, :class:`base64io.Base64IO`, that implements
 a streaming interface for Base64 encoding.
