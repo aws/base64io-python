@@ -6,9 +6,8 @@ matrix:
       env: TOXENV=py26
     - python: 2.7
       env: TOXENV=py27
-# Disabling 3.3 pending https://github.com/awslabs/base64io-python/issues/4
-#    - python: 3.3
-#      env: TOXENV=py33
+    - python: 3.3
+      env: TOXENV=py33
     - python: 3.4
       env: TOXENV=py34
     - python: 3.5
@@ -39,5 +38,7 @@ matrix:
       env: TOXENV=pylint-tests
     - python: 3.6
       env: TOXENV=black-check
-install: pip install tox
+install:
+    - if [[ $TRAVIS_PYTHON_VERSION == 3.3 ]]; then pip install virtualenv==15.2.0; fi
+    - pip install tox
 script: tox
