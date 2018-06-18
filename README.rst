@@ -94,10 +94,10 @@ Encode data
 
    from base64io import Base64IO
 
-   with open('source_file', 'rb') as source, open('encoded_file', 'wb') as target:
-      with Base64IO(target) as encoded_target:
-         for line in source:
-            encoded_target.write(line)
+   with open("source_file", "rb") as source, open("encoded_file", "wb") as target:
+       with Base64IO(target) as encoded_target:
+           for line in source:
+               encoded_target.write(line)
 
 Decode data
 ===========
@@ -111,10 +111,10 @@ Decode data
 
    from base64io import Base64IO
 
-   with open('encoded_file', 'rb') as encoded_source, open('target_file', 'wb') as target:
-      with Base64IO(encoded_source) as source:
-         for line in source:
-            target.write(line)
+   with open("encoded_file", "rb") as encoded_source, open("target_file", "wb") as target:
+       with Base64IO(encoded_source) as source:
+           for line in source:
+               target.write(line)
 
 *******
 License
