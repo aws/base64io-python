@@ -38,7 +38,6 @@ HYPOTHESIS_SETTINGS = hypothesis.settings(
 BINARY = hypothesis_strategies.binary()
 
 
-@pytest.mark.hypothesis
 @HYPOTHESIS_SETTINGS
 @hypothesis.given(source=BINARY)
 def test_cycle(source):
