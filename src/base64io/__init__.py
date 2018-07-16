@@ -324,9 +324,15 @@ class Base64IO(io.IOBase):
         :rtype: list of bytes
         """
         lines = []
+        total_len = 0
+        hint_defined = hint > 0
+
         for line in self:  # type: ignore
             lines.append(line)
-            if 0 < hint < len(lines) * io.DEFAULT_BUFFER_SIZE:
+            total_len += len(line)
+
+            hint_satisfied = total_len > hint
+            if hint_defined and hint_satisfied:
                 break
         return lines
 
