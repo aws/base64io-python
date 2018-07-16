@@ -326,7 +326,7 @@ class Base64IO(io.IOBase):
         lines = []
         for line in self:  # type: ignore
             lines.append(line)
-            if hint > 0 and len(lines) * io.DEFAULT_BUFFER_SIZE > hint:
+            if 0 < hint < len(lines) * io.DEFAULT_BUFFER_SIZE:
                 break
         return lines
 
