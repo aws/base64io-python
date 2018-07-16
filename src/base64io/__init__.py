@@ -43,6 +43,15 @@ def _py2():
     return sys.version_info[0] == 2
 
 
+if not _py2():
+    # The "file" object does not exist in Python 3, but we need to reference
+    # it in Python 2 code paths. Defining this here accomplishes two things:
+    # First, it allows linters to accept "file" as a defined object in Python 3.
+    # Second, it will serve as a canary to ensure that there are no references
+    # to "file" in Python 3 code paths.
+    file = NotImplemented  # pylint: disable=invalid-name
+
+
 class Base64IO(io.IOBase):
     """Base64 stream with context manager support.
 
@@ -121,9 +130,8 @@ class Base64IO(io.IOBase):
         try:
             method = getattr(self.__wrapped, method_name)
         except AttributeError:
-            if _py2() and isinstance(self.__wrapped, file):  # type: ignore # noqa pylint: disable=undefined-variable
-                if mode in self.__wrapped.mode:
-                    return True
+            if _py2() and isinstance(self.__wrapped, file) and mode in self.__wrapped.mode:
+                return True
             return False
         else:
             return method()
@@ -316,9 +324,15 @@ class Base64IO(io.IOBase):
         :rtype: list of bytes
         """
         lines = []
+        total_len = 0
+        hint_defined = hint > 0
+
         for line in self:  # type: ignore
             lines.append(line)
-            if hint > 0 and len(lines) * io.DEFAULT_BUFFER_SIZE > hint:
+            total_len += len(line)
+
+            hint_satisfied = total_len > hint
+            if hint_defined and hint_satisfied:
                 break
         return lines
 

@@ -10,7 +10,7 @@
 # distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
-"""Unit test suite for ``aws_encryption_sdk_cli.internal.encoding``."""
+"""Unit test suite for ``base64io.Base64IO``."""
 from __future__ import division
 
 import base64
