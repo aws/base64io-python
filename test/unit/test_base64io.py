@@ -21,15 +21,19 @@ pytestmark = [pytest.mark.unit]
 
 
 def test_py2():
-    is_2 = sys.version_info[0] == 2
+    is_python2 = sys.version_info[0] == 2
 
-    assert (is_2 and base64io._py2()) or (not is_2 and not base64io._py2())
+    assert (is_python2 and base64io._py2()) or (not is_python2 and not base64io._py2())
 
 
 def test_file():
-    is_2 = sys.version_info[0] == 2
+    is_python2 = sys.version_info[0] == 2
 
-    if is_2:
+    if is_python2:
+        # If we are in Python 2, the "file" assignment should not
+        # happen because it is a builtin object.
         assert not hasattr(base64io, 'file')
     else:
+        # If we are in Python 3, the "file" assignment should happen
+        # to provide a concrete definition of the "file" name.
         assert base64io.file is NotImplemented
