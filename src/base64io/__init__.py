@@ -29,7 +29,7 @@ except ImportError:  # pragma: no cover
     pass
 
 __all__ = ("Base64IO",)
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 _LOGGER = logging.getLogger(LOGGER_NAME)
 
 
