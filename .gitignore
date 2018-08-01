@@ -17,3 +17,6 @@ docs/build
 .mypy_cache
 .hypothesis
 .pytest_cache
+
+# PyCharm
+.idea/
