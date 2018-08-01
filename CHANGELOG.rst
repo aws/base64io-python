@@ -2,6 +2,11 @@
 Changelog
 *********
 
+1.0.2 -- 2018-08-01
+===================
+
+* Move the ``base64io-python`` repository from ``awslabs`` to ``aws``.
+
 1.0.1 -- 2018-06-12
 ===================
 
