@@ -18,8 +18,8 @@ base64io
    :target: https://base64io-python.readthedocs.io/en/stable/
    :alt: Documentation Status
 
-.. image:: https://travis-ci.org/awslabs/base64io-python.svg?branch=master
-   :target: https://travis-ci.org/awslabs/base64io-python
+.. image:: https://travis-ci.org/aws/base64io-python.svg?branch=master
+   :target: https://travis-ci.org/aws/base64io-python
 
 .. image:: https://ci.appveyor.com/api/projects/status/ds8xvogp4m70j9ks?svg=true
    :target: https://ci.appveyor.com/project/mattsb42-aws/base64io-python-36722
@@ -123,5 +123,5 @@ License
 This library is licensed under the Apache 2.0 License.
 
 .. _Read the Docs: http://base64io-python.readthedocs.io/en/latest/
-.. _GitHub: https://github.com/awslabs/base64io-python/
+.. _GitHub: https://github.com/aws/base64io-python/
 .. _base64 documentation: https://docs.python.org/3/library/base64.html#base64.decode
