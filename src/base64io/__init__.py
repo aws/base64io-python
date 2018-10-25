@@ -226,8 +226,8 @@ class Base64IO(io.IOBase):
             # case the base64 module happily removes any whitespace.
             return data
 
-        _data_buffer = io.BytesIO()
-        _data_buffer.write(b"".join(data.split()))
+        _data_buffer = io.BytesIO() if isinstance(data, bytes) else io.StringIO()
+        _data_buffer.write(type(data)().join(data.split()))
         _remaining_bytes_to_read = total_bytes_to_read - _data_buffer.tell()
 
         while _remaining_bytes_to_read > 0:
@@ -236,7 +236,7 @@ class Base64IO(io.IOBase):
                 # No more data to read from wrapped stream.
                 break
 
-            _data_buffer.write(b"".join(_raw_additional_data.split()))
+            _data_buffer.write(type(data)().join(_raw_additional_data.split()))
             _remaining_bytes_to_read = total_bytes_to_read - _data_buffer.tell()
         return _data_buffer.getvalue()
 
@@ -273,8 +273,12 @@ class Base64IO(io.IOBase):
         data = self.__wrapped.read(_bytes_to_read)
         # Remove whitespace from read data and attempt to read more data to get the desired
         # number of bytes.
-        if any([char.encode("utf-8") in data for char in string.whitespace]):
-            data = self._read_additional_data_removing_whitespace(data, _bytes_to_read)
+        if isinstance(data, bytes):
+            if any([char.encode("utf-8") in data for char in string.whitespace]):
+                data = self._read_additional_data_removing_whitespace(data, _bytes_to_read)
+        else:
+            if any([char in data for char in string.whitespace]):
+                data = self._read_additional_data_removing_whitespace(data, _bytes_to_read)
 
         results = io.BytesIO()
         # First, load any stashed bytes
