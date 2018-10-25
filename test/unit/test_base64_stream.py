@@ -14,6 +14,7 @@
 from __future__ import division
 
 import base64
+import binascii
 import functools
 import io
 import math
@@ -314,11 +315,29 @@ def test_base64io_decode_with_whitespace(plaintext_source, b64_plaintext_with_wh
 
 
 @pytest.mark.parametrize("plaintext_source, b64_plaintext_with_whitespace, read_bytes", build_whitespace_testcases())
+def test_base64io_decode_with_whitespace_ignored(plaintext_source, b64_plaintext_with_whitespace, read_bytes):
+    try:
+        with Base64IO(io.BytesIO(b64_plaintext_with_whitespace), ignore_whitespace=False) as decoder:
+            test = decoder.read(read_bytes)
+    except binascii.Error as e:
+        assert e.args[0] == 'Incorrect padding'
+
+
+@pytest.mark.parametrize("plaintext_source, b64_plaintext_with_whitespace, read_bytes", build_whitespace_testcases())
 def test_base64io_decode_with_whitespace_str(plaintext_source, b64_plaintext_with_whitespace, read_bytes):
     with Base64IO(io.StringIO(b64_plaintext_with_whitespace.decode('ascii'))) as decoder:
         test = decoder.read(read_bytes)
 
     assert test == plaintext_source[:read_bytes]
+
+
+@pytest.mark.parametrize("plaintext_source, b64_plaintext_with_whitespace, read_bytes", build_whitespace_testcases())
+def test_base64io_decode_with_whitespace_ignored_str(plaintext_source, b64_plaintext_with_whitespace, read_bytes):
+    try:
+        with Base64IO(io.StringIO(b64_plaintext_with_whitespace.decode('ascii')), ignore_whitespace=False) as decoder:
+            test = decoder.read(read_bytes)
+    except binascii.Error as e:
+        assert e.args[0] == 'Incorrect padding'
 
 
 @pytest.mark.parametrize(

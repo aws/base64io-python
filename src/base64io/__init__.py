@@ -71,11 +71,12 @@ class Base64IO(io.IOBase):
         avoid data loss. If used as a context manager, we take care of that for you.
 
     :param wrapped: Stream to wrap
+    :param ignore_whitespace: If set, removes whitespace characters in the stream before decoding
     """
 
     closed = False
 
-    def __init__(self, wrapped):
+    def __init__(self, wrapped, ignore_whitespace=True):
         # type: (Base64IO, IO) -> None
         """Check for required methods on wrapped stream and set up read buffer.
 
@@ -85,6 +86,7 @@ class Base64IO(io.IOBase):
         if not all(hasattr(wrapped, attr) for attr in required_attrs):
             raise TypeError("Base64IO wrapped object must have attributes: %s" % (repr(sorted(required_attrs)),))
         super(Base64IO, self).__init__()
+        self.ignore_whitespace = ignore_whitespace
         self.__wrapped = wrapped
         self.__read_buffer = b""
         self.__write_buffer = b""
@@ -271,14 +273,15 @@ class Base64IO(io.IOBase):
 
         # Read encoded bytes from wrapped stream.
         data = self.__wrapped.read(_bytes_to_read)
-        # Remove whitespace from read data and attempt to read more data to get the desired
-        # number of bytes.
-        if isinstance(data, bytes):
-            if any([char.encode("utf-8") in data for char in string.whitespace]):
-                data = self._read_additional_data_removing_whitespace(data, _bytes_to_read)
-        else:
-            if any([char in data for char in string.whitespace]):
-                data = self._read_additional_data_removing_whitespace(data, _bytes_to_read)
+        if self.ignore_whitespace:
+            # Remove whitespace from read data and attempt to read more data to get the desired
+            # number of bytes.
+            if isinstance(data, bytes):
+                if any([char.encode("utf-8") in data for char in string.whitespace]):
+                    data = self._read_additional_data_removing_whitespace(data, _bytes_to_read)
+            else:
+                if any([char in data for char in string.whitespace]):
+                    data = self._read_additional_data_removing_whitespace(data, _bytes_to_read)
 
         results = io.BytesIO()
         # First, load any stashed bytes
