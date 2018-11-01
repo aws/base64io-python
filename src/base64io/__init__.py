@@ -209,7 +209,7 @@ class Base64IO(io.IOBase):
             self.write(line)
 
     def _read_additional_data_removing_whitespace(self, data, total_bytes_to_read):
-        # type: (bytes, int) -> bytes
+        # type: (AnyStr, int) -> AnyStr
         """Read additional data from wrapped stream until we reach the desired number of bytes.
 
         .. note::
