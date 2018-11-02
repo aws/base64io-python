@@ -23,7 +23,7 @@ LOGGER_NAME = "base64io"
 
 try:  # Python 3.5.0 and 3.5.1 have incompatible typing modules
     from types import TracebackType  # noqa pylint: disable=unused-import
-    from typing import IO, Iterable, List, Type, Optional, AnyStr  # noqa pylint: disable=unused-import
+    from typing import Union, IO, Iterable, List, Type, Optional, AnyStr  # noqa pylint: disable=unused-import
 except ImportError:  # pragma: no cover
     # We only actually need these imports when running the mypy checks
     pass
@@ -226,7 +226,8 @@ class Base64IO(io.IOBase):
             # case the base64 module happily removes any whitespace.
             return data
 
-        _data_buffer = io.BytesIO() if isinstance(data, bytes) else io.StringIO()
+        _data_buffer = io.BytesIO() if isinstance(data, bytes) \
+            else io.StringIO()  # type: Union[io.BytesIO, io.StringIO]
         _data_buffer.write(type(data)().join(data.split()))
         _remaining_bytes_to_read = total_bytes_to_read - _data_buffer.tell()
 
