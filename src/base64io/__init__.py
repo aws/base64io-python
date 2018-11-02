@@ -23,7 +23,7 @@ LOGGER_NAME = "base64io"
 
 try:  # Python 3.5.0 and 3.5.1 have incompatible typing modules
     from types import TracebackType  # noqa pylint: disable=unused-import
-    from typing import IO, Iterable, List, Type, Optional  # noqa pylint: disable=unused-import
+    from typing import IO, Iterable, List, Type, Optional, AnyStr  # noqa pylint: disable=unused-import
 except ImportError:  # pragma: no cover
     # We only actually need these imports when running the mypy checks
     pass
