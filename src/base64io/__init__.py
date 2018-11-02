@@ -274,7 +274,7 @@ class Base64IO(io.IOBase):
         # Remove whitespace from read data and attempt to read more data to get the desired
         # number of bytes.
         if isinstance(data, bytes):
-            whitespace = [char.encode("utf-8") for char in string.whitespace]
+            whitespace = string.whitespace.encode("utf-8")
         else:
             whitespace = string.whitespace
 
