@@ -19,8 +19,8 @@ import io
 import math
 import os
 
-from mock import MagicMock, sentinel
 import pytest
+from mock import MagicMock, sentinel
 
 from base64io import Base64IO
 
@@ -159,7 +159,7 @@ def test_base64io_decode(bytes_to_generate, bytes_per_round, number_of_rounds, t
 )
 def test_base64io_decode_str(bytes_to_generate, bytes_per_round, number_of_rounds, total_bytes_to_expect):
     plaintext_source = os.urandom(bytes_to_generate)
-    plaintext_b64 = io.StringIO(base64.b64encode(plaintext_source).decode('ascii'))
+    plaintext_b64 = io.StringIO(base64.b64encode(plaintext_source).decode("ascii"))
     plaintext_wrapped = Base64IO(plaintext_b64)
 
     test = b""
@@ -315,7 +315,7 @@ def test_base64io_decode_with_whitespace(plaintext_source, b64_plaintext_with_wh
 
 @pytest.mark.parametrize("plaintext_source, b64_plaintext_with_whitespace, read_bytes", build_whitespace_testcases())
 def test_base64io_decode_with_whitespace_str(plaintext_source, b64_plaintext_with_whitespace, read_bytes):
-    with Base64IO(io.StringIO(b64_plaintext_with_whitespace.decode('ascii'))) as decoder:
+    with Base64IO(io.StringIO(b64_plaintext_with_whitespace.decode("ascii"))) as decoder:
         test = decoder.read(read_bytes)
 
     assert test == plaintext_source[:read_bytes]

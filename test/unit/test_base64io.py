@@ -32,7 +32,7 @@ def test_file():
     if is_python2:
         # If we are in Python 2, the "file" assignment should not
         # happen because it is a builtin object.
-        assert not hasattr(base64io, 'file')
+        assert not hasattr(base64io, "file")
     else:
         # If we are in Python 3, the "file" assignment should happen
         # to provide a concrete definition of the "file" name.

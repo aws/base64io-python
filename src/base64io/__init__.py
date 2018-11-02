@@ -227,7 +227,7 @@ class Base64IO(io.IOBase):
             return data
 
         _data_buffer = io.BytesIO() if isinstance(data, bytes) else io.StringIO()
-        join_char = b'' if isinstance(data, bytes) else u''
+        join_char = b"" if isinstance(data, bytes) else u""
         _data_buffer.write(join_char.join(data.split()))  # type: ignore
         _remaining_bytes_to_read = total_bytes_to_read - _data_buffer.tell()  # type: ignore
 
@@ -274,8 +274,9 @@ class Base64IO(io.IOBase):
         data = self.__wrapped.read(_bytes_to_read)
         # Remove whitespace from read data and attempt to read more data to get the desired
         # number of bytes.
-        whitespace = string.whitespace.encode("utf-8") if isinstance(data, bytes) \
-            else string.whitespace  # type: Union[bytes, str]
+        whitespace = (
+            string.whitespace.encode("utf-8") if isinstance(data, bytes) else string.whitespace
+        )  # type: Union[bytes, str]
 
         if any([char in data for char in whitespace]):
             data = self._read_additional_data_removing_whitespace(data, _bytes_to_read)
