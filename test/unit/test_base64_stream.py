@@ -157,6 +157,22 @@ def test_base64io_decode(bytes_to_generate, bytes_per_round, number_of_rounds, t
 @pytest.mark.parametrize(
     "bytes_to_generate, bytes_per_round, number_of_rounds, total_bytes_to_expect", build_test_cases()
 )
+def test_base64io_decode_str(bytes_to_generate, bytes_per_round, number_of_rounds, total_bytes_to_expect):
+    plaintext_source = os.urandom(bytes_to_generate)
+    plaintext_b64 = io.StringIO(base64.b64encode(plaintext_source).decode('ascii'))
+    plaintext_wrapped = Base64IO(plaintext_b64)
+
+    test = b""
+    for _round in range(number_of_rounds):
+        test += plaintext_wrapped.read(bytes_per_round)
+
+    assert len(test) == total_bytes_to_expect
+    assert test == plaintext_source[:total_bytes_to_expect]
+
+
+@pytest.mark.parametrize(
+    "bytes_to_generate, bytes_per_round, number_of_rounds, total_bytes_to_expect", build_test_cases()
+)
 def test_base64io_encode_partial(bytes_to_generate, bytes_per_round, number_of_rounds, total_bytes_to_expect):
     plaintext_source = os.urandom(bytes_to_generate)
     plaintext_stream = io.BytesIO(plaintext_source)
@@ -292,6 +308,14 @@ def build_whitespace_testcases():
 @pytest.mark.parametrize("plaintext_source, b64_plaintext_with_whitespace, read_bytes", build_whitespace_testcases())
 def test_base64io_decode_with_whitespace(plaintext_source, b64_plaintext_with_whitespace, read_bytes):
     with Base64IO(io.BytesIO(b64_plaintext_with_whitespace)) as decoder:
+        test = decoder.read(read_bytes)
+
+    assert test == plaintext_source[:read_bytes]
+
+
+@pytest.mark.parametrize("plaintext_source, b64_plaintext_with_whitespace, read_bytes", build_whitespace_testcases())
+def test_base64io_decode_with_whitespace_str(plaintext_source, b64_plaintext_with_whitespace, read_bytes):
+    with Base64IO(io.StringIO(b64_plaintext_with_whitespace.decode('ascii'))) as decoder:
         test = decoder.read(read_bytes)
 
     assert test == plaintext_source[:read_bytes]
