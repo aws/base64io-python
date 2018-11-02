@@ -228,8 +228,8 @@ class Base64IO(io.IOBase):
 
         _data_buffer = io.BytesIO() if isinstance(data, bytes) else io.StringIO()
         join_char = b'' if isinstance(data, bytes) else ''
-        _data_buffer.write(join_char.join(data.split()))
-        _remaining_bytes_to_read = total_bytes_to_read - _data_buffer.tell()
+        _data_buffer.write(join_char.join(data.split()))  # type: ignore
+        _remaining_bytes_to_read = total_bytes_to_read - _data_buffer.tell()  # type: ignore
 
         while _remaining_bytes_to_read > 0:
             _raw_additional_data = self.__wrapped.read(_remaining_bytes_to_read)
@@ -237,9 +237,9 @@ class Base64IO(io.IOBase):
                 # No more data to read from wrapped stream.
                 break
 
-            _data_buffer.write(join_char.join(_raw_additional_data.split()))
-            _remaining_bytes_to_read = total_bytes_to_read - _data_buffer.tell()
-        return _data_buffer.getvalue()
+            _data_buffer.write(join_char.join(_raw_additional_data.split()))  # type: ignore
+            _remaining_bytes_to_read = total_bytes_to_read - _data_buffer.tell()  # type: ignore
+        return _data_buffer.getvalue()  # type: ignore
 
     def read(self, b=-1):
         # type: (int) -> bytes
