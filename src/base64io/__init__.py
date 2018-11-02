@@ -227,7 +227,7 @@ class Base64IO(io.IOBase):
             return data
 
         _data_buffer = io.BytesIO() if isinstance(data, bytes) else io.StringIO()
-        join_char = b'' if isinstance(data, bytes) else ''
+        join_char = b'' if isinstance(data, bytes) else u''
         _data_buffer.write(join_char.join(data.split()))  # type: ignore
         _remaining_bytes_to_read = total_bytes_to_read - _data_buffer.tell()  # type: ignore
 
