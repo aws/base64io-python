@@ -2,6 +2,14 @@
 Changelog
 *********
 
+1.0.3 -- 2018-xx-xx
+===================
+
+* Add support for strings on input for decoding to match functionality of :class:`base64.b64decode`.
+  `#21 <https://github.com/aws/base64io-python/issues/21>`_
+  `#23 <https://github.com/aws/base64io-python/pull/23>`_
+  `#24 <https://github.com/aws/base64io-python/pull/24>`_
+
 1.0.2 -- 2018-08-01
 ===================
 
