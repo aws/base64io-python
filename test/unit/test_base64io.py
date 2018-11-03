@@ -39,10 +39,9 @@ def test_file():
         assert base64io.file is NotImplemented
 
 
-@pytest.mark.parametrize("source, expected", (
-        ('asdf', b'asdf'),
-        (b'\x00\x01\x02\x03', b'\x00\x01\x02\x03'),
-        (u'\u1111\u2222', b'\xe1\x84\x91\xe2\x88\xa2')
-))
+@pytest.mark.parametrize(
+    "source, expected",
+    (("asdf", b"asdf"), (b"\x00\x01\x02\x03", b"\x00\x01\x02\x03"), (u"\u1111\u2222", b"\xe1\x84\x91\xe2\x88\xa2")),
+)
 def test_to_bytes(source, expected):
     assert base64io._to_bytes(source) == expected
