@@ -32,8 +32,16 @@ def test_file():
     if is_python2:
         # If we are in Python 2, the "file" assignment should not
         # happen because it is a builtin object.
-        assert not hasattr(base64io, 'file')
+        assert not hasattr(base64io, "file")
     else:
         # If we are in Python 3, the "file" assignment should happen
         # to provide a concrete definition of the "file" name.
         assert base64io.file is NotImplemented
+
+
+@pytest.mark.parametrize(
+    "source, expected",
+    (("asdf", b"asdf"), (b"\x00\x01\x02\x03", b"\x00\x01\x02\x03"), (u"\u1111\u2222", b"\xe1\x84\x91\xe2\x88\xa2")),
+)
+def test_to_bytes(source, expected):
+    assert base64io._to_bytes(source) == expected
