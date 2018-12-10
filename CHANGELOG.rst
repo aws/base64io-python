@@ -2,7 +2,7 @@
 Changelog
 *********
 
-1.0.3 -- 2018-xx-xx
+1.0.3 -- 2018-12-10
 ===================
 
 * Add support for strings on input for decoding to match functionality of :class:`base64.b64decode`.
