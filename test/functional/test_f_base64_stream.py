@@ -30,10 +30,8 @@ HYPOTHESIS_SETTINGS = hypothesis.settings(
         hypothesis.HealthCheck.hung_test,
         hypothesis.HealthCheck.large_base_example,
     ),
-    timeout=hypothesis.unlimited,
     deadline=None,
     max_examples=1000,
-    max_iterations=1500,
 )
 BINARY = hypothesis_strategies.binary()
 
