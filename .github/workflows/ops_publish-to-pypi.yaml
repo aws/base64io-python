@@ -1,0 +1,43 @@
+# This workflow publishes to PyPI whenever we publish a GitHub release.
+name: Publish to PyPI
+
+on:
+  releases:
+    types:
+      - published
+
+jobs:
+  test-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.x
+      - run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade -r ci-requirements.txt
+      - name: publish to test-PyPI
+        env:
+          TOXENV: test-release
+          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
+        run: tox -- -vv
+  release:
+    # Only run if test-release succeeded.
+    needs: test-release
+    # I'm putting this as a separate job rather than another step
+    # so that we can be certain that there is no cross-contamination.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.x
+      - run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade -r ci-requirements.txt
+      - name: publish to PyPI
+        env:
+          TOXENV: release
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: tox -- -vv

@@ -1,0 +1,4 @@
+# This workflow runs tests on pull requests.
+name: Static Analysis
+
+on: [pull_request]
