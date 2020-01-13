@@ -1,4 +1,33 @@
 # This workflow runs static analysis checks on pull requests.
-name: Static Analysis
+name: static analysis
 
 on: [pull_request]
+
+jobs:
+  analysis:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        category:
+          - bandit
+          - doc8
+          - readme
+          - docs
+          - flake8
+          - pylint
+          - flake8-tests
+          - pylint-tests
+          - black-check
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.x
+      - run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade -r ci-requirements.txt
+      - name: check
+        env:
+          TOXENV: ${{ matrix.category }}
+        run: tox -- -vv
