@@ -4,7 +4,7 @@ name: pull request router
 on: [pull_request]
 
 jobs:
-  send to develop:
+  send-to-develop:
     # Move any PRs to master that do *not* come from development
     if: github.base_ref == 'master' && github.head_ref != 'development'
     runs-on: ubuntu-latest
