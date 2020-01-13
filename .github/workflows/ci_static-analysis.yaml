@@ -10,6 +10,8 @@ jobs:
       fail-fast: false
       matrix:
         category:
+          - mypy-py2
+          - mypy-py3
           - bandit
           - doc8
           - readme
