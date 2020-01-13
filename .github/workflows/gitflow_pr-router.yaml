@@ -4,12 +4,12 @@ name: pull request router
 on: [pull_request]
 
 jobs:
-  send-to-develop:
+  send-to-development:
     # Move any PRs to master that do *not* come from development
     if: github.base_ref == 'master' && github.head_ref != 'development'
     runs-on: ubuntu-latest
     steps:
-      - name: switch
+      - name: change branch
         uses: actions/github-script@0.4.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
