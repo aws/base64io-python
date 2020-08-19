@@ -1,3 +1,9 @@
+[MESSAGE CONTROLS]
+# Disabling messages that either we don't care about we intentionally break.
+disable =
+    bad-continuation,  # we let black handle this
+    ungrouped-imports,  # we let black handle this
+
 [BASIC]
 # Allow function names up to 50 characters
 function-rgx = [a-z_][a-z0-9_]{2,50}$
