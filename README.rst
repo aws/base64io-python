@@ -45,6 +45,8 @@ For the latest full documentation, see `Read the Docs`_.
 
 Find us on `GitHub`_.
 
+`Security issue notifications`_
+
 ***************
 Getting Started
 ***************
@@ -127,3 +129,4 @@ This library is licensed under the Apache 2.0 License.
 .. _Read the Docs: http://base64io-python.readthedocs.io/en/latest/
 .. _GitHub: https://github.com/aws/base64io-python/
 .. _base64 documentation: https://docs.python.org/3/library/base64.html#base64.decode
+.. _Security issue notifications: https://github.com/aws/base64io-python/tree/master/CONTRIBUTING.md#security-issue-notifications
