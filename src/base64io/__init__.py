@@ -23,7 +23,7 @@ LOGGER_NAME = "base64io"
 
 try:  # Python 3.5.0 and 3.5.1 have incompatible typing modules
     from types import TracebackType  # noqa pylint: disable=unused-import
-    from typing import Union, IO, Iterable, List, Type, Optional, AnyStr  # noqa pylint: disable=unused-import
+    from typing import IO, AnyStr, Iterable, List, Literal, Optional, Type, Union  # noqa pylint: disable=unused-import
 except ImportError:  # pragma: no cover
     # We only actually need these imports when running the mypy checks
     pass
@@ -108,7 +108,7 @@ class Base64IO(io.IOBase):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> bool
+        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> Literal[False]
         """Properly close self on exit."""
         self.close()
         return False
@@ -143,7 +143,11 @@ class Base64IO(io.IOBase):
         try:
             method = getattr(self.__wrapped, method_name)
         except AttributeError:
-            if _py2() and isinstance(self.__wrapped, file) and mode in self.__wrapped.mode:
+            if (
+                _py2()
+                and isinstance(self.__wrapped, file)  # pylint: disable=isinstance-second-argument-not-valid-type
+                and mode in self.__wrapped.mode
+            ):
                 return True
             return False
         else:

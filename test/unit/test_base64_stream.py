@@ -282,9 +282,7 @@ def test_base64io_decode_readline(bytes_to_read, expected_bytes_read):
 def build_b64_with_whitespace(source_bytes, line_length):
     plaintext_source = os.urandom(source_bytes)
     b64_plaintext = io.BytesIO(base64.b64encode(plaintext_source))
-    b64_plaintext_with_whitespace = b"\n".join(
-        [line for line in iter(functools.partial(b64_plaintext.read, line_length), b"")]
-    )
+    b64_plaintext_with_whitespace = b"\n".join(iter(functools.partial(b64_plaintext.read, line_length), b""))
     return plaintext_source, b64_plaintext_with_whitespace
 
 
