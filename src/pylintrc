@@ -3,6 +3,10 @@
 disable =
     bad-continuation,  # we let black handle this
     ungrouped-imports,  # we let black handle this
+    # All below are disabled because we need to support Python 2
+    useless-object-inheritance,
+    raise-missing-from,
+    super-with-arguments,
 
 [BASIC]
 # Allow function names up to 50 characters
