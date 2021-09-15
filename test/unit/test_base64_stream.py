@@ -93,7 +93,7 @@ def test_passthrough_methods_file(tmpdir, method_name, mode, expected):
     source = tmpdir.join("source")
     source.write("some data")
 
-    with open(str(source), mode) as reader:
+    with open(str(source), mode) as reader:  # pylint: disable=unspecified-encoding
         with Base64IO(reader) as b64:
             test = getattr(b64, method_name)()
 

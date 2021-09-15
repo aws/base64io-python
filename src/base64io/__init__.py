@@ -23,7 +23,16 @@ LOGGER_NAME = "base64io"
 
 try:  # Python 3.5.0 and 3.5.1 have incompatible typing modules
     from types import TracebackType  # noqa pylint: disable=unused-import
-    from typing import IO, AnyStr, Iterable, List, Literal, Optional, Type, Union  # noqa pylint: disable=unused-import
+    from typing import (  # type: ignore[attr-defined] # noqa pylint: disable=unused-import
+        IO,
+        AnyStr,
+        Iterable,
+        List,
+        Literal,
+        Optional,
+        Type,
+        Union,
+    )
 except ImportError:  # pragma: no cover
     # We only actually need these imports when running the mypy checks
     pass
@@ -292,7 +301,7 @@ class Base64IO(io.IOBase):
         # Remove whitespace from read data and attempt to read more data to get the desired
         # number of bytes.
 
-        if any([char in data for char in string.whitespace.encode("utf-8")]):
+        if any(char in data for char in string.whitespace.encode("utf-8")):
             data = self._read_additional_data_removing_whitespace(data, _bytes_to_read)
 
         results = io.BytesIO()
