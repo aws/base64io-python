@@ -29,7 +29,7 @@ def get_version():
     return _release
 
 
-project = u"base64io"
+project = u"base64io"  # pylint: disable=redundant-u-string-prefix
 version = get_version()
 release = get_release()
 
@@ -52,7 +52,7 @@ templates_path = ["_templates"]
 source_suffix = ".rst"  # The suffix of source filenames.
 master_doc = "index"  # The master toctree document.
 
-copyright = u"%s, Amazon" % datetime.now().year  # pylint: disable=redefined-builtin
+copyright = u"%s, Amazon" % datetime.now().year  # pylint: disable=redefined-builtin,redundant-u-string-prefix
 
 # List of directories, relative to source directory, that shouldn't be searched
 # for source files.
