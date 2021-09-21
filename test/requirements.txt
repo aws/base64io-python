@@ -1,7 +1,7 @@
 hypothesis>=3.56.0
 mock
 pytest>=3.3.1
-pytest-cov
+pytest-cov>=2.12.1
 # mypy (from tox) outputs coverage data in a coverage 4.x format
 coverage==4.5.4
 typing>=3.6.2
