@@ -52,8 +52,8 @@ Getting Started
 ***************
 
 :class:`base64io.Base64IO` has no dependencies other than the standard library and should
-work with any version of Python greater than 2.6. We test it on CPython 2.6, 2.7, 3.3,
-3.4, 3.5, 3.6, and 3.7.
+work with any version of Python greater than 3.7. We test it on CPython 3.7, 3.8, and
+3.9.
 
 Installation
 ============
