@@ -38,7 +38,6 @@ setup(
     maintainer="Amazon Web Services",
     long_description=readme(),
     keywords="base64 stream",
-    data_files=["README.rst", "CHANGELOG.rst", "LICENSE"],
     license="Apache License 2.0",
     install_requires=[],
     classifiers=[
