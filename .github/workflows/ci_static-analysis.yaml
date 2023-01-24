@@ -15,6 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         category:
+          - mypy-py2
           - mypy-py3
           - bandit
           - doc8
@@ -37,17 +38,3 @@ jobs:
         env:
           TOXENV: ${{ matrix.category }}
         run: tox -- -vv
-  mypy2:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 2.x
-      - run: |
-          python -m pip install --upgrade pip
-          pip install --upgrade -r ci-requirements.txt
-      - name: check
-        env:
-          TOXENV: mypy-py2
-        run: tox -- -vv   
