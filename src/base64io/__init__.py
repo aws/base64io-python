@@ -159,8 +159,7 @@ class Base64IO(io.IOBase):
             ):
                 return True
             return False
-        else:
-            return method()
+        return method()
 
     def writable(self):
         # type: () -> bool
