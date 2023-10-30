@@ -59,7 +59,7 @@ def test_base64io_always_false_methods(method_name):
     assert not getattr(test, method_name)()
 
 
-@pytest.mark.parametrize("method_name, args", (("fileno", ()), ("seek", (None,)), ("tell", ()), ("truncate", ())))
+@pytest.mark.parametrize("method_name, args", (("fileno", ()), ("seek", (4,)), ("tell", ()), ("truncate", ())))
 def test_unsupported_methods(method_name, args):
     test = Base64IO(io.BytesIO())
 
