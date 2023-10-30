@@ -1,4 +1,4 @@
-# This workflow runs static analysis checks on pull requests.l
+# This workflow runs static analysis checks on pull requests.
 name: static analysis
 
 on:
