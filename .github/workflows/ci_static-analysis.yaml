@@ -1,4 +1,4 @@
-# This workflow runs static analysis checks on pull requests.
+# This workflow runs static analysis checks on pull requests.l
 name: static analysis
 
 on:
@@ -29,7 +29,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.x
+          python-version: 3.11
+          # Python 3.12 has pip issues, use 3.11
       - run: |
           python -m pip install --upgrade pip
           pip install --upgrade -r ci-requirements.txt
