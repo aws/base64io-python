@@ -24,7 +24,8 @@ jobs:
             architecture: x86
           - os: macos-latest
             architecture: x64
-        major: 3
+        major:
+          - 3
         minor:
           - 8
           - 9
