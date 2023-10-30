@@ -44,5 +44,5 @@ jobs:
           pip install --upgrade -r ci-requirements.txt
       - name: run test
         env:
-          TOXENV: ${{ matrix.category }}
+          TOXENV: '${{ matrix.category }}${{ matrix.python }}'
         run: tox -- -vv
