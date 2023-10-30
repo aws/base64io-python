@@ -24,12 +24,13 @@ jobs:
             architecture: x86
           - os: macos-latest
             architecture: x64
-        python:
-          - 3.8
-          - 3.9
-          - "3.10"
-          - "3.11"
-          - "3.12"
+        major: 3
+        minor:
+          - 8
+          - 9
+          - 10
+          - 11
+          - 12
         category:
           # Runs the base test environment
           - py
@@ -37,12 +38,12 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python }}
+          python-version: '${{ matrix.major }}.${{ matrix.minor }}'
           architecture: ${{ matrix.platform.architecture }}
       - run: |
           python -m pip install --upgrade pip
           pip install --upgrade -r ci-requirements.txt
       - name: run test
         env:
-          TOXENV: '${{ matrix.category }}${{ matrix.python }}'
+          TOXENV: '${{ matrix.category }}${{ matrix.major }}${{ matrix.minor }}'
         run: tox -- -vv
