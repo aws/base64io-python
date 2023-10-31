@@ -1,3 +1,4 @@
+setuptools
 hypothesis>=3.56.0
 mock
 pytest>=3.3.1
