@@ -13,11 +13,16 @@
 """Base64 stream with context manager support."""
 from __future__ import division
 
-import base64
 import io
 import logging
 import string
 import sys
+
+try:
+    import pybase64 as b64
+except ImportError:
+    import base64 as b64
+
 
 LOGGER_NAME = "base64io"
 
@@ -131,7 +136,7 @@ class Base64IO(io.IOBase):
             This does **not** close the wrapped stream.
         """
         if self.__write_buffer:
-            self.__wrapped.write(base64.b64encode(self.__write_buffer))
+            self.__wrapped.write(b64.b64encode(self.__write_buffer))
             self.__write_buffer = b""
         self.closed = True
 
@@ -217,12 +222,12 @@ class Base64IO(io.IOBase):
 
         # If an even base64 chunk or finalizing the stream, write through.
         if len(_bytes_to_write) % 3 == 0:
-            return self.__wrapped.write(base64.b64encode(_bytes_to_write))
+            return self.__wrapped.write(b64.b64encode(_bytes_to_write))
 
         # We're not finalizing the stream, so stash the trailing bytes and encode the rest.
         trailing_byte_pos = -1 * (len(_bytes_to_write) % 3)
         self.__write_buffer = _bytes_to_write[trailing_byte_pos:]
-        return self.__wrapped.write(base64.b64encode(_bytes_to_write[:trailing_byte_pos]))
+        return self.__wrapped.write(b64.b64encode(_bytes_to_write[:trailing_byte_pos]))
 
     def writelines(self, lines):
         # type: (Iterable[bytes]) -> None
@@ -307,7 +312,7 @@ class Base64IO(io.IOBase):
         # First, load any stashed bytes
         results.write(self.__read_buffer)
         # Decode encoded bytes.
-        results.write(base64.b64decode(data))
+        results.write(b64.b64decode(data))
 
         results.seek(0)
         output_data = results.read(b)
