@@ -154,7 +154,7 @@ class Base64IO(io.IOBase):
         except AttributeError:
             if (
                 _py2()
-                and isinstance(self.__wrapped, file)  # pylint: disable=isinstance-second-argument-not-valid-type
+                and isinstance(self.__wrapped, file)  # pylint: disable=isinstance-second-argument-not-valid-type, possibly-used-before-assignment
                 and mode in self.__wrapped.mode
             ):
                 return True
