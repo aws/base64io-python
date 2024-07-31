@@ -62,6 +62,13 @@ Installation
 
    $ pip install base64io
 
+
+optional: install the pybase64 for better performance
+
+.. code::
+
+   $ pip install pybase64
+
 ***
 Use
 ***
