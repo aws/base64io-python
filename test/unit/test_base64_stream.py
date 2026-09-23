@@ -361,10 +361,10 @@ def test_base64io_decode_context_manager():
 
 @pytest.mark.parametrize(
     "hint_bytes, expected_bytes_read",
-    ((-1, 102400), (0, 102400), (1, io.DEFAULT_BUFFER_SIZE), (io.DEFAULT_BUFFER_SIZE + 99, io.DEFAULT_BUFFER_SIZE * 2)),
+    ((-1, io.DEFAULT_BUFFER_SIZE * 2 + 1), (0, io.DEFAULT_BUFFER_SIZE * 2 + 1), (1, io.DEFAULT_BUFFER_SIZE), (io.DEFAULT_BUFFER_SIZE + 99, io.DEFAULT_BUFFER_SIZE * 2)),
 )
 def test_base64io_decode_readlines(hint_bytes, expected_bytes_read):
-    source_plaintext = os.urandom(102400)
+    source_plaintext = os.urandom(io.DEFAULT_BUFFER_SIZE * 2 + 1)
     source_stream = io.BytesIO(base64.b64encode(source_plaintext))
 
     test = io.BytesIO()
