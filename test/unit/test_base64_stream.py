@@ -11,6 +11,7 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 """Unit test suite for ``base64io.Base64IO``."""
+
 from __future__ import division
 
 import base64
@@ -32,6 +33,19 @@ def test_base64io_bad_wrap():
         Base64IO(7)
 
     excinfo.match(r"Base64IO wrapped object must have attributes: *")
+
+
+@pytest.mark.parametrize("chunk_size", (1, 2, 3, 5))
+def test_decode_short_reads_without_whitespace(chunk_size):
+    class ShortReadStream(io.BytesIO):
+        def read(self, size=-1):
+            return super(ShortReadStream, self).read(min(size, chunk_size) if size >= 0 else size)
+
+    plaintext = b"a blocking stream may return fewer bytes than requested"
+    with Base64IO(ShortReadStream(base64.b64encode(plaintext))) as decoder:
+        decoded = b"".join(iter(functools.partial(decoder.read, 7), b""))
+
+    assert decoded == plaintext
 
 
 def test_base64io_write_after_closed():
