@@ -35,22 +35,6 @@ def test_base64io_bad_wrap():
     excinfo.match(r"Base64IO wrapped object must have attributes: *")
 
 
-@pytest.mark.parametrize("chunks", ((b"a",), (b"abc",), (b"a", b"bc", b"de", b"")))
-def test_write_returns_input_bytes_accepted(chunks):
-    target = io.BytesIO()
-    with Base64IO(target) as encoder:
-        for chunk in chunks:
-            assert encoder.write(chunk) == len(chunk)
-    assert target.getvalue() == base64.b64encode(b"".join(chunks))
-
-
-def test_write_through_buffered_writer():
-    target = io.BytesIO()
-    with io.BufferedWriter(Base64IO(target), buffer_size=4) as writer:
-        assert writer.write(b"abcdef") == 6
-    assert target.getvalue() == base64.b64encode(b"abcdef")
-
-
 def test_base64io_write_after_closed():
     with Base64IO(io.BytesIO()) as test:
         with pytest.raises(ValueError) as excinfo:
@@ -391,6 +375,22 @@ def test_base64io_decode_readlines(hint_bytes, expected_bytes_read):
 
     assert len(test.getvalue()) == expected_bytes_read
     assert test.getvalue() == source_plaintext[:expected_bytes_read]
+
+
+@pytest.mark.parametrize("chunks", ((b"a",), (b"abc",), (b"a", b"bc", b"de", b"")))
+def test_write_returns_input_bytes_accepted(chunks):
+    target = io.BytesIO()
+    with Base64IO(target) as encoder:
+        for chunk in chunks:
+            assert encoder.write(chunk) == len(chunk)
+    assert target.getvalue() == base64.b64encode(b"".join(chunks))
+
+
+def test_write_through_buffered_writer():
+    target = io.BytesIO()
+    with io.BufferedWriter(Base64IO(target), buffer_size=4) as writer:
+        assert writer.write(b"abcdef") == 6
+    assert target.getvalue() == base64.b64encode(b"abcdef")
 
 
 def test_base64io_encode_writelines():
