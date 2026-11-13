@@ -11,6 +11,7 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 """Unit test suite for ``base64io.Base64IO``."""
+
 from __future__ import division
 
 import base64
@@ -331,6 +332,29 @@ def test_base64io_decode_parametrized_null_bytes(plaintext_source, b64_plaintext
         test = decoder.read(read_bytes)
 
     assert test == plaintext_source[:read_bytes]
+
+
+@pytest.mark.parametrize("read_sizes", ((1, 1, 1), (1, 2)))
+def test_decode_buffered_bytes_without_waiting_for_input(read_sizes):
+    class PendingInput(io.BytesIO):
+        def read(self, size=-1):
+            if size != 0 and self.tell() == 4:
+                raise BlockingIOError("producer has not supplied the next chunk")
+            return super(PendingInput, self).read(size)
+
+    source = PendingInput(b"YWJj")
+    with Base64IO(source) as decoder:
+        assert b"".join(decoder.read(size) for size in read_sizes) == b"abc"
+    assert source.tell() == 4
+
+
+def test_decode_zero_bytes_without_reading_input():
+    class NoInputRead(io.BytesIO):
+        def read(self, size=-1):
+            raise AssertionError("read(0) must not request input")
+
+    with Base64IO(NoInputRead()) as decoder:
+        assert decoder.read(0) == b""
 
 
 def test_base64io_decode_read_only_from_buffer():

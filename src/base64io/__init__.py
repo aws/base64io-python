@@ -11,6 +11,7 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 """Base64 stream with context manager support."""
+
 from __future__ import division
 
 import base64
@@ -286,11 +287,14 @@ class Base64IO(io.IOBase):
         if not self.readable():
             raise IOError("Stream is not readable")
 
+        if b is not None and 0 <= b <= len(self.__read_buffer):
+            output_data = self.__read_buffer[:b]
+            self.__read_buffer = self.__read_buffer[b:]
+            return output_data
+
         if b is None or b < 0:
             b = -1
             _bytes_to_read = -1
-        elif b == 0:
-            _bytes_to_read = 0
         elif b > 0:
             # Calculate number of encoded bytes that must be read to get b raw bytes.
             _bytes_to_read = int((b - len(self.__read_buffer)) * 4 / 3)
