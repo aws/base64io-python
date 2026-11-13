@@ -11,6 +11,7 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 """Base64 stream with context manager support."""
+
 from __future__ import division
 
 import base64
@@ -203,6 +204,8 @@ class Base64IO(io.IOBase):
             avoid data loss. If used as a context manager, we take care of that for you.
 
         :param bytes b: Bytes to write to wrapped stream
+        :returns: Number of input bytes accepted, including buffered bytes
+        :rtype: int
         :raises ValueError: if called on closed Base64IO object
         :raises IOError: if underlying stream is not writable
         """
@@ -218,12 +221,14 @@ class Base64IO(io.IOBase):
 
         # If an even base64 chunk or finalizing the stream, write through.
         if len(_bytes_to_write) % 3 == 0:
-            return self.__wrapped.write(base64.b64encode(_bytes_to_write))
+            self.__wrapped.write(base64.b64encode(_bytes_to_write))
+            return len(b)
 
         # We're not finalizing the stream, so stash the trailing bytes and encode the rest.
         trailing_byte_pos = -1 * (len(_bytes_to_write) % 3)
         self.__write_buffer = _bytes_to_write[trailing_byte_pos:]
-        return self.__wrapped.write(base64.b64encode(_bytes_to_write[:trailing_byte_pos]))
+        self.__wrapped.write(base64.b64encode(_bytes_to_write[:trailing_byte_pos]))
+        return len(b)
 
     def writelines(self, lines):
         # type: (Iterable[bytes]) -> None
