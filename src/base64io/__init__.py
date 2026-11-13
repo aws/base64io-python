@@ -11,6 +11,7 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 """Base64 stream with context manager support."""
+
 from __future__ import division
 
 import base64
@@ -301,7 +302,7 @@ class Base64IO(io.IOBase):
         # Remove whitespace from read data and attempt to read more data to get the desired
         # number of bytes.
 
-        if any(char in data for char in string.whitespace.encode("utf-8")):
+        if len(data) < _bytes_to_read or any(char in data for char in string.whitespace.encode("utf-8")):
             data = self._read_additional_data_removing_whitespace(data, _bytes_to_read)
 
         results = io.BytesIO()
